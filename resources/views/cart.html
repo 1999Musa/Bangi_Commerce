@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangi - Cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Your Cart</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items"></tbody>
+        </table>
+        <button class="btn btn-success" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        function loadCart() {
+            fetch("http://localhost:8000/api/cart/view")
+                .then(response => response.json())
+                .then(cart => {
+                    let output = '';
+                    Object.keys(cart).forEach(id => {
+                        let item = cart[id];
+                        output += `
+                            <tr>
+                                <td>${item.name}</td>
+                                <td>$${item.price}</td>
+                                <td>${item.quantity}</td>
+                                <td><button class="btn btn-danger" onclick="removeFromCart(${id})">Remove</button></td>
+                            </tr>
+                        `;
+                    });
+                    document.getElementById("cart-items").innerHTML = output;
+                });
+        }
+
+        function removeFromCart(id) {
+            fetch(`http://localhost:8000/api/cart/remove/${id}`, { method: "DELETE" })
+                .then(() => {
+                    alert("Item removed!");
+                    loadCart();
+                });
+        }
+
+        function checkout() {
+            window.location.href = "checkout.html";
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>
