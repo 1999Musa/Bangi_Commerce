@@ -10,7 +10,7 @@
 <body class="container mt-5">
     <h1  class="mb-4" >Bangi Commerce</h1>
 
-    <h2 class="mb-4">Available Products</h2>
+    <h2 class="mb-4">Choose Your Products</h2>
     @if($products->count())
         <div class="row">
             @foreach ($products as $product)
