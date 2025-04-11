@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Product; 
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return response()->json(Product::all(), 200);
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
+    
+
+// public function index()
+// {
+//     $products = Product::all(); // fetch all products
+//     return view('products.index', compact('products')); // send to view
+// }
+
+    // public function index()
+    // {
+    //     $products = Product::all();
+    //     return view('products.index', compact('products'));
+    //     // return response()->json(Product::all(), 200);
+    // }
 
     public function show($id)
     {
@@ -33,6 +48,7 @@ class ProductController extends Controller
         $product = Product::create($request->all());
         return response()->json($product, 201);
     }
+
 
     public function update(Request $request, $id)
     {
